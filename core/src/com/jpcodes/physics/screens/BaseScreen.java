@@ -51,7 +51,8 @@ public class BaseScreen extends ScreenAdapter {
     final float GRID_STEP = 10f;
 
     public BaseScreen(Game game) {
-        VisUI.load();
+        if (!VisUI.isLoaded())
+            VisUI.load();
 
         this.game = game;
 
