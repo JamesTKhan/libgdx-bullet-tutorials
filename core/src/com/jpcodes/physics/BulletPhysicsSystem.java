@@ -1,5 +1,7 @@
 package com.jpcodes.physics;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseInterface;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
+import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -45,6 +48,8 @@ public class BulletPhysicsSystem implements Disposable {
 
     private final btConstraintSolver constraintSolver;
 
+    private final DebugDrawer debugDrawer;
+
     private final float fixedTimeStep = 1/60f;
 
     public BulletPhysicsSystem() {
@@ -55,11 +60,22 @@ public class BulletPhysicsSystem implements Disposable {
         broadphase = new btDbvtBroadphase();
         constraintSolver = new btSequentialImpulseConstraintSolver();
         dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, constraintSolver, collisionConfig);
+
+        debugDrawer = new DebugDrawer();
+        debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_DrawWireframe);
+
+        dynamicsWorld.setDebugDrawer(debugDrawer);
     }
 
     public void update(float delta) {
         // performs collision detection and physics simulation
         dynamicsWorld.stepSimulation(delta, 1, fixedTimeStep);
+    }
+
+    public void render(Camera camera) {
+        debugDrawer.begin(camera);
+        dynamicsWorld.debugDrawWorld();
+        debugDrawer.end();
     }
 
     public void addBody(btRigidBody body) {

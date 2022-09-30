@@ -38,6 +38,8 @@ import com.kotcrab.vis.ui.widget.VisLabel;
  * @version September 15, 2022
  */
 public class BaseScreen extends ScreenAdapter {
+    private static boolean drawDebug = false;
+
     protected PerspectiveCamera camera;
     protected FirstPersonCameraController cameraController;
     protected ModelBatch modelBatch;
@@ -104,6 +106,10 @@ public class BaseScreen extends ScreenAdapter {
             dispose();
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            drawDebug = !drawDebug;
+        }
+
         bulletPhysicsSystem.update(delta);
         cameraController.update(delta);
 
@@ -118,6 +124,10 @@ public class BaseScreen extends ScreenAdapter {
         modelBatch.begin(camera);
         modelBatch.render(renderInstances, environment);
         modelBatch.end();
+
+        if (drawDebug) {
+            bulletPhysicsSystem.render(camera);
+        }
 
         stage.act();
         stage.draw();
