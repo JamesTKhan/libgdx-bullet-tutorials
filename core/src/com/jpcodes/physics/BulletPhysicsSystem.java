@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Disposable;
  * @version September 29, 2022
  */
 public class BulletPhysicsSystem implements Disposable {
+    public static final Vector3 DEFAULT_GRAVITY = new Vector3(0, -9.81f, 0f);
 
     /**
      * Stores all btCollisionObjects and provides an interface to

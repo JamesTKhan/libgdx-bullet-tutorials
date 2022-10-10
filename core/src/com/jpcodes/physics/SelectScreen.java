@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jpcodes.physics.screens.BasicCollisionDetection;
+import com.jpcodes.physics.screens.DynamicCharacterScreen;
 import com.jpcodes.physics.screens.RigidBodyPhysics;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -29,7 +30,8 @@ public class SelectScreen extends ScreenAdapter {
     enum ScreenEnum {
         NotSelected,
         BasicCollisionDetection,
-        RigidBodyDynamics
+        RigidBodyDynamics,
+        DynamicCharacter
     }
 
     public SelectScreen(final Game game) {
@@ -52,6 +54,9 @@ public class SelectScreen extends ScreenAdapter {
                         break;
                     case RigidBodyDynamics:
                         game.setScreen(new RigidBodyPhysics(game));
+                        break;
+                    case DynamicCharacter:
+                        game.setScreen(new DynamicCharacterScreen(game));
                         break;
                 }
             }
