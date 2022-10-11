@@ -14,6 +14,7 @@ import com.jpcodes.physics.utils.Utils3D;
  */
 public class ThirdPersonCameraController extends CameraController {
     private final Vector3 position = new Vector3();
+    private final Vector3 newPosition = new Vector3();
     private final Vector3 direction = new Vector3();
 
     private final Camera camera;
@@ -34,17 +35,18 @@ public class ThirdPersonCameraController extends CameraController {
         Utils3D.getDirection(followTarget.transform, direction);
         Utils3D.getPosition(followTarget.transform, position);
 
-        // Look at the follow targets current position
-        camera.lookAt(position);
-        camera.up.set(Vector3.Y);
+        newPosition.set(position);
 
         // Interpolate cam position based on follow targets current direction
-        camera.position.lerp(position.add(direction.scl(-cameraDistance)), interpolationSpeed * delta);
+        camera.position.lerp(newPosition.add(direction.scl(-cameraDistance)), interpolationSpeed * delta);
 
         // Interpolate camera height
         if (heightAdjustment != 0)
             camera.position.y = MathUtils.lerp(camera.position.y, camera.position.y + heightAdjustment, interpolationSpeed * delta);
 
+        // Look at the follow targets current position
+        camera.lookAt(position);
+        camera.up.set(Vector3.Y);
         camera.update();
     }
 
