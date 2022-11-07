@@ -25,8 +25,8 @@ public class BoundingBoxCollision extends BaseScreen {
 
     private final GameObject boxOne;
     private final GameObject boxTwo;
-    private final OrientedBoundingBox boundingBox = new OrientedBoundingBox();
-    private final OrientedBoundingBox boundingBox2 = new OrientedBoundingBox();
+    private final BoundingBox boundingBox = new BoundingBox();
+    private final BoundingBox boundingBox2 = new BoundingBox();
 
     private final Array<GameObject> gameObjects = new Array<>();
 
@@ -56,9 +56,12 @@ public class BoundingBoxCollision extends BaseScreen {
 
     @Override
     public void render(float delta) {
-        // Update the OOB boxes
-        boundingBox.set(boxOne.boundingBox, boxOne.transform);
-        boundingBox2.set(boxTwo.boundingBox, boxTwo.transform);
+        // Update the boxes
+        boundingBox.set(boxOne.boundingBox);
+        boundingBox.mul(boxOne.transform);
+
+        boundingBox2.set(boxTwo.boundingBox);
+        boundingBox2.mul(boxTwo.transform);
 
         // Check for intersection
         if (boundingBox.intersects(boundingBox2)) {
@@ -81,11 +84,6 @@ public class BoundingBoxCollision extends BaseScreen {
         BoxShapeBuilder.build(builder, 0, 0, 0, 5f, 10f, 5f);
 
         GameObject box = new GameObject(modelBuilder.end());
-
-        // randomize rotation
-        box.transform.rotate(new Quaternion(Vector3.Z, MathUtils.random(0f, 270f)));
-        box.transform.rotate(new Quaternion(Vector3.X, MathUtils.random(0f, 270f)));
-        box.transform.rotate(new Quaternion(Vector3.Y, MathUtils.random(0f, 270f)));
 
         renderInstances.add(box);
         return box;
